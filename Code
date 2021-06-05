@@ -1,0 +1,149 @@
+import numpy as np
+from matplotlib import image
+from matplotlib import pyplot
+import matplotlib.pyplot as plt
+import imageio
+
+from math import log10, sqrt
+
+
+
+
+
+def decimalToBinary(n):
+    return bin(n).replace("0b", "")
+
+# load image as pixel array
+image = image.imread('lena.jpg')
+
+# summarize shape of the pixel array
+print(image.dtype)
+print(image.shape)
+# data(watermark)after converting to binary
+imageArray = np.array(plt.imread('lena.jpg'), dtype=np.uint8)
+data="11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+
+#convert RGb matrix to binary matrix
+s=""
+for x in range(512):
+     for y in range(512):
+         for z in range(3):
+             f=imageArray[x,y,z]
+             n=decimalToBinary(f)
+             x
+             o=len(n)
+             while o < 8:
+                n='0'+n
+
+                o=o+1
+
+
+             s=s+n
+
+print("step1")
+arr1=[]
+
+for b in range(len(s)):
+    arr1.append(s[b])
+
+
+
+print("step2")
+
+h=7
+k=0
+i=0
+l = 0
+hh=7
+
+p=""
+
+#add watermark
+while (i<(len(data))-4):
+
+    while k>=0:
+
+
+        arr1[h] = data[i]
+
+        if(k>0):
+            h=h-1
+            i=i+1
+
+        k=k-1
+
+
+    l=l+1
+    k=l
+
+    if(l>8):
+        k=0
+        l=0
+    hh=hh+8
+    h=hh
+    i=i+1
+
+
+
+for x in range(512):
+     for y in range(512):
+         for z in range(3):
+             imageArray[x, y, z] =0
+
+
+
+
+arr=[]
+print("step3")
+aa=512*512*3
+p=""
+v=0
+for x in range(512):
+     for y in range(512):
+         for z in range(3):
+             for u in range(8):
+                 p=p+arr1[v]
+                 v=v+1
+
+
+             y=int(p,2)
+             p=""
+             arr.append(y)
+a=0
+for x in range(512):
+     for y in range(512):
+         for z in range(3):
+             imageArray[x,y,z]=arr[a]
+             a=a+1
+
+
+print("step4")
+
+
+
+# display the array of pixels as an image
+
+pyplot.imshow(image)
+pyplot.show()
+
+pyplot.imshow(imageArray)
+pyplot.show()
+imageio.imwrite('len.jpg', imageArray)
+
+# compute PSNR
+def PSNR(original, watermark):
+    mse = np.mean((original - watermark) ** 2)
+    if (mse == 0):  # MSE is zero means no noise is present in the signal .
+        # Therefore PSNR have no importance.
+        return 100
+    max_pixel = 255.0
+    psnr = 20 * log10(max_pixel / sqrt(mse))
+    return psnr
+
+
+def PSNR1():
+    original =(plt.imread("lena.jpg"))
+    watermark = (plt.imread("len.jpg", 1))
+    value = PSNR(original, watermark)
+    print(f"PSNR value is {value} dB")
+PSNR1()
