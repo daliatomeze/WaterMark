@@ -1,0 +1,4 @@
+this program to add watemark or secretmassege in a photo using an algorthim to put the data in sequace bit0 in the first Byte and bit0 ,bit1 in the second byte ........ bit0,bit1 ,bit2, bit3 , bit 4...... bit 7
+in the 8th Byte and repeat until we finish all the data that we have.
+language : python
+writer : dalia tomeze.
